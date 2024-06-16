@@ -24,7 +24,7 @@ user_prompt="""
   ]
 }
 """
-
+theme_path=""".streamlit/config.toml"""
 
 survey = ss.StreamlitSurvey()
 
@@ -36,7 +36,13 @@ survey.multiselect("Additional Features?", options=["HDMI Port", "Screen Resolut
 
 if st.button('Click me'):
     print(survey.to_json())
-    response = ph.ask(user_prompt+"Explain the difference in specification between these computers, do not just list the specs for every model, instead compare their values for each category I am a complete beginner explain in detail. DO NOT USE TECHNICAL JARGON, YOUR TASK IS TO EXPLAIN EACH COMPUTER COMPONENT AND HOW THEY DIFFER FROM MODEL TO MODEL"+laptops.get_laptops(str(survey.to_json())))
-    final=ph.get_message(response).split("@$")[-1]
-    print(final)
-    st.title(final)
+    with open(theme_path,"r") as theme:
+        data=theme.readlines()
+        mode=data[2].replace(" ","")[:-2].split("\"")[-1]
+
+        print(mode)
+        laptop=laptops.get_laptops(str(survey.to_json()),mode)
+        # response = ph.ask(user_prompt+"Explain the difference in specification between these computers, do not just list the specs for every model, instead compare their values for each category I am a complete beginner explain in detail. DO NOT USE TECHNICAL JARGON, YOUR TASK IS TO EXPLAIN EACH COMPUTER COMPONENT AND HOW THEY DIFFER FROM MODEL TO MODEL"+laptop)
+        # final=ph.get_message(response).split("@$")[-1]
+        # print(final)
+        # st.title(final)

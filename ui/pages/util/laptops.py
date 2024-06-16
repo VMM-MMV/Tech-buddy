@@ -2,16 +2,17 @@ from elasticsearch import Elasticsearch
 import pages.util.user as user
 # Connect to Elasticsearch
 
-def get_laptops(prompt):
+def get_laptops(prompt,mode):
     es = Elasticsearch(['http://localhost:9200'])
     result=""
     # Query for the best match for multiple criteria and sort by price
     query = user.ask_prompt(prompt)
     print(query)
 
-
+    index="computers" if mode == "light" else "computers-999"
+    print(index)
     # Search the index
-    response = es.search(index='computers-999', body=query)
+    response = es.search(index=index, body=query)
 
     # Print search results
     print("Search Results:")
