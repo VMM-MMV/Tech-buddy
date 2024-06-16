@@ -4,7 +4,7 @@ import os
 class FeatureActivator:
     def __init__(self):
         st.sidebar.toggle("DarkMode🌙", key="t1", value=False)
-        self.current_command = 1 
+        self.current_command = 1
 
     def run(self):
         current_dir = os.getcwd()
@@ -15,13 +15,13 @@ class FeatureActivator:
             with open(config_path, "w+") as f:
                 f.write("""
                     [theme]
-                    base = "dark"
+                    base = "light"
                 """)
         if  st.session_state.t1  == False:
             with open(config_path, "w+") as f:
                 f.write("""
                     [theme]
-                    base = "light"
+                    base = "dark"
                 """)
 
 

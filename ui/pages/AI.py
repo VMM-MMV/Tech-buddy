@@ -3,7 +3,7 @@ from streamlit_chatbox import *
 import time
 import simplejson as json
 from webscout import BLACKBOXAI
-
+import pages.util.laptops as laptops
 ph = BLACKBOXAI(
     is_conversation=True,
     max_tokens=800,
@@ -35,6 +35,9 @@ user_prompt="""
   ]
 }
 """
+
+
+
 
 def main():
     
@@ -96,6 +99,7 @@ def main():
 
     if query := st.text_input('Input your question here'):
         chat_box.user_say(query)
+        st.text("")
         if streaming:
             generator = llm.chat_stream(query)
             response = ph.ask(query)
@@ -137,12 +141,20 @@ def main():
 
         with col1:
             if st.button('Show Multimedia'):
-                chat_box.ai_say(Image('https://tse4-mm.cn.bing.net/th/id/OIP-C.cy76ifbr2oQPMEs2H82D-QHaEv?w=284&h=181&c=7&r=0&o=5&dpr=1.5&pid=1.7'))
+                # chat_box.ai_say(Image('https://tse4-mm.cn.bing.net/th/id/OIP-C.cy76ifbr2oQPMEs2H82D-QHaEv?w=284&h=181&c=7&r=0&o=5&dpr=1.5&pid=1.7'))
+                # time.sleep(0.5)
+                # chat_box.ai_say(Video('https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4'))
+                # time.sleep(0.5)
+                # chat_box.ai_say(Audio('https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4'))
+                try:
+                    ans=laptops.get_laptops("I want a laptop for gaming")
+                except:
+                    ans=laptops.get_laptops("I want a laptop for gaming")
+                
                 time.sleep(0.5)
-                chat_box.ai_say(Video('https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4'))
-                time.sleep(0.5)
-                chat_box.ai_say(Audio('https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4'))
+                response = ph.ask(user_prompt+"Explain the difference in specification between these computers, do not just list the specs for every model, instead compare their values for each category I am a complete beginner explain in detail. DO NOT USE TECHNICAL JARGON, YOUR TASK IS TO EXPLAIN EACH COMPUTER COMPONENT AND HOW THEY DIFFER FROM MODEL TO MODEL"+ans)
 
+                chat_box.ai_say(Markdown(ph.get_message(response).split("@$")[-1]+"\n\n"+ans))
         
         btns.download_button(
             "Export Markdown",
