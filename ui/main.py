@@ -32,7 +32,7 @@ def write():
         if mode=="light":
             st.title("You are in Normal Mode, check out Dark Mode!")
         else:
-            st.title("You are in Dark Mode, New your searches are on 999.md")
+            st.title("You are in Dark Mode, Now your searches are on 999.md")
 
     st.write("""Use Cases:
              \n1) You can ask a question, and the AI will respond to your question.
