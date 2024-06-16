@@ -3,7 +3,7 @@ import pages.util.user as user
 # Connect to Elasticsearch
 
 def get_laptops(prompt,mode):
-    es = Elasticsearch(['http://localhost:9200'])
+    es = Elasticsearch(['https://1637-81-180-73-68.ngrok-free.app'])
     result=""
     # Query for the best match for multiple criteria and sort by price
     query = user.ask_prompt(prompt)
