@@ -4,18 +4,10 @@ import time
 import simplejson as json
 from webscout import BLACKBOXAI
 import pages.util.laptops as laptops
-ph = BLACKBOXAI(
-    is_conversation=True,
-    max_tokens=800,
-    timeout=30,
-    intro=None,
-    filepath=None,
-    update_file=True,
-    proxies={},
-    history_offset=10250,
-    act=None,
-    model=None # You can specify a model if needed
-)
+from webscout import PhindSearch
+
+# Create an instance of the PHIND class
+ph = PhindSearch()
 
 user_prompt="""
 {
@@ -84,22 +76,11 @@ def main():
         "feedback_type": "thumbs",
         "optional_text_label": "Welcome to feedback",
     }
-    ph = BLACKBOXAI(
-        is_conversation=True,
-        max_tokens=800,
-        timeout=30,
-        intro=None,
-        filepath=None,
-        update_file=True,
-        proxies={},
-        history_offset=10250,
-        act=None,
-        model=None # You can specify a model if needed
-    )
+    ph = PhindSearch()
+
 
     if query := st.text_input('Input your question here'):
         chat_box.user_say(query)
-        st.text("")
         if streaming:
             generator = llm.chat_stream(query)
             response = ph.ask(query)
@@ -147,9 +128,9 @@ def main():
                 # time.sleep(0.5)
                 # chat_box.ai_say(Audio('https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4'))
                 try:
-                    ans=laptops.get_laptops("I want a laptop for gaming")
+                    ans=laptops.get_laptops(query)
                 except:
-                    ans=laptops.get_laptops("I want a laptop for gaming")
+                    ans=laptops.get_laptops(query)
                 
                 time.sleep(0.5)
                 response = ph.ask(user_prompt+"Explain the difference in specification between these computers, do not just list the specs for every model, instead compare their values for each category I am a complete beginner explain in detail. DO NOT USE TECHNICAL JARGON, YOUR TASK IS TO EXPLAIN EACH COMPUTER COMPONENT AND HOW THEY DIFFER FROM MODEL TO MODEL"+ans)
